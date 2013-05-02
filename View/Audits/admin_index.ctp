@@ -9,6 +9,7 @@
 <?php foreach ($audits as $audit): ?>
 	<tr>
 		<td><?php echo $audit['Audit']['log']; ?></td>
+		<!-- <td style="text-align: center;"><?php echo $this->Html->link(date('m-d-Y h:i A', strtotime($audit['Audit']['created'])), array('action' => 'view', $audit['Audit']['id'])); ?></td> -->
 		<td style="text-align: center;"><?php echo date('m-d-Y h:i A', strtotime($audit['Audit']['created'])); ?></td>
 	</tr>
 <?php endforeach; ?>

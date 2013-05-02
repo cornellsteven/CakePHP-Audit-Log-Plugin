@@ -21,6 +21,28 @@ class AuditsController extends AuditLogAppController {
 		$this->set(compact('audits'));
 		$this->set('title_for_layout', 'Audit Logs');
 	}
+    
+    public function admin_view($id = NULL) {
+        $this->Audit->id = $id;
+        if ( ! $this->Audit->exists()) {
+            throw new NotFoundException('We could not find that audit log');
+        }
+        
+        $audit = $this->getAudit($id);
+        $this->set(compact('audit'));
+        $this->set('title_for_layout', 'Log Details');
+    }
+    
+    public function getAudit($id) {
+        $this->Audit->id = $id;
+        $audit = $this->Audit->read();
+        
+		$audit['Model'] = json_decode( $audit['Audit']['json_object'], true )[$audit['Audit']['model']];
+		$audit['User'] = $this->_getSource($audit['Audit']);
+		$audit['Audit']['log'] = $this->_formatLog($audit);
+        
+        return $audit;
+    }
 	
 	public function getAudits($method = 'paginate') {
 		if ($method == 'find') {
