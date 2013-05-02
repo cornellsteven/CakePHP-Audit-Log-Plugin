@@ -117,7 +117,7 @@ class AuditableBehavior extends ModelBehavior {
     /*
      * If a currentUser() method exists in the model class (or, of
      * course, in a superclass) the call that method to pull all user
-     * data. Assume than an id field exists.
+     * data. Assume that an id field exists.
      */
     $source = array();
     if ( $Model->hasMethod( 'currentUser' ) ) {
@@ -128,11 +128,12 @@ class AuditableBehavior extends ModelBehavior {
     
     $data = array(
       'Audit' => array(
-        'event'     => $created ? 'CREATE' : 'EDIT',
-        'model'     => $Model->alias,
-        'entity_id' => $Model->id,
-        'json_object' => json_encode( $audit ),
-        'source_id' => isset( $source['id'] ) ? $source['id'] : null
+        'event'         => $created ? 'CREATE' : 'EDIT',
+        'model'         => $Model->alias,
+        'entity_id'     => $Model->id,
+        'json_object'   => json_encode( $audit ),
+        'source_id'     => isset( $source['id'] ) ? $source['id'] : null,
+		'source_object' => json_encode( $source ),
       )
     );
 
@@ -246,11 +247,12 @@ class AuditableBehavior extends ModelBehavior {
     $audit = array( $Model->alias => $this->_original[$Model->alias] );
     $data  = array(
       'Audit' => array(
-        'event'       => 'DELETE',
-        'model'       => $Model->alias,
-        'entity_id'   => $Model->id,
-        'json_object' => json_encode( $audit ),
-        'source_id'   => isset( $source['id'] ) ? $source['id'] : null
+        'event'         => 'DELETE',
+        'model'         => $Model->alias,
+        'entity_id'     => $Model->id,
+        'json_object'   => json_encode( $audit ),
+        'source_id'     => isset( $source['id'] ) ? $source['id'] : null,
+        'source_object' => json_encode( $source ),
       )
     );
     
