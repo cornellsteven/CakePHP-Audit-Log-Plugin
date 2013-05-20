@@ -37,7 +37,8 @@ class AuditsController extends AuditLogAppController {
         $this->Audit->id = $id;
         $audit = $this->Audit->read();
         
-		$audit['Model'] = json_decode( $audit['Audit']['json_object'], true )[$audit['Audit']['model']];
+		$json = json_decode( $audit['Audit']['json_object'], true );
+		$audit['Model'] = $json[$audit['Audit']['model']];
 		$audit['User'] = $this->_getSource($audit['Audit']);
 		$audit['Audit']['log'] = $this->_formatLog($audit);
         
@@ -53,7 +54,8 @@ class AuditsController extends AuditLogAppController {
 		
 		$this->User->recursive = -1;
 		foreach ($audits as $key => $value) {
-			$audits[$key]['Model'] = json_decode( $value['Audit']['json_object'], true )[$value['Audit']['model']];
+			$json = json_decode( $value['Audit']['json_object'], true );
+			$audits[$key]['Model'] = $json[$value['Audit']['model']];
 			$audits[$key]['User'] = $this->_getSource($value['Audit']);
 			$audits[$key]['Audit']['log'] = $this->_formatLog($audits[$key]);
 		}
